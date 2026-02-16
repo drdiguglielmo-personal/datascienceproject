@@ -1,7 +1,5 @@
 ## World Cup Match Subset for Milestone 1
 
-This folder documents the subset of the **Fjelstul World Cup Database** used for Milestone 1.
-
 ### 1. Source
 
 - **Original database**: *The Fjelstul World Cup Database v.1.2.0* (R package `worldcup`).
