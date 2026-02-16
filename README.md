@@ -5,7 +5,6 @@
 - **Original database**: *The Fjelstul World Cup Database v.1.2.0* (R package `worldcup`).
 - **Author**: Joshua C. Fjelstul, Ph.D.
 - **Repository**: https://www.github.com/jfjelstul/worldcup
-- **License**: CC-BY-SA 4.0.
 
 ### 2. Files and folders in this project
 
@@ -23,7 +22,6 @@
 
 - `docs/`  
   Documentation and metadata for this project.
-  - `docs/README_worldcup_subset.md`: this file, describing data sources, processing steps, and project structure.
   - `docs/worldcup_subset_codebook.csv`: data dictionary for key variables in the cleaned match datasets.
 
 - `requirements.txt`  
