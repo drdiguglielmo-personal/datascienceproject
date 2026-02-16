@@ -1,7 +1,7 @@
 """
 clean and split world cup match data
 
-Inputs:
+in:
   - files_needed/matches.csv
   - files_needed/tournaments.csv
 
@@ -9,15 +9,13 @@ new files from this script:
   - data_clean/matches_train.csv    # mens world cup matches, 1930–2018
   - data_clean/matches_test.csv     # mens world cup matches, 2022
 
-Usage:
-  python3 scripts/clean_worldcup.py
 """
 
 from __future__ import annotations
 
-import pathlib  # for working with filesystem paths in an OS-independent way
+import pathlib  # for working with filesystem paths
 
-# External library for data manipulation (install via `pip install pandas`)
+# ex. library for data manipulation
 import pandas as pd
 
 
@@ -30,12 +28,9 @@ def load_raw_data() -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Load the raw CSV files from the `files_needed/` folder.
 
-    Returns
-    -------
+    returns - 
     matches : DataFrame
-        Full matches table from Fjelstul's database.
     tournaments : DataFrame
-        Full tournaments table (used to filter to mens tournaments and get year).
     """
     matches_path = FILES_NEEDED_DIR / "matches.csv"
     tournaments_path = FILES_NEEDED_DIR / "tournaments.csv"
@@ -78,9 +73,9 @@ def basic_type_cleaning(matches: pd.DataFrame) -> pd.DataFrame:
     """
     minimal, safe type cleaning
 
-    - Parse match_date as datetime (date)
-    - Leave match_time as string
-    - Ensure key boolean-ish columns are 0/1 integers
+    - match_date as datetime (date)
+    - match_time as string
+    -key boolean-ish columns are 0/1 integers
     """
     df = matches.copy()
 
