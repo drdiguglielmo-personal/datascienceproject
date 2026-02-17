@@ -20,12 +20,23 @@
   Python scripts for data management and cleaning.
   - `scripts/clean_worldcup.py`: loads raw CSVs from `files_needed/`, filters to men's World Cups, performs light cleaning, and writes train/test CSVs into `data_clean/`.
 
+- **`Data Science Report.ipynb`**  
+  Jupyter notebook that performs **exploratory data analysis (EDA)** on the cleaned match data. It uses the same train/test datasets (`matches_train.csv`, `matches_test.csv`) produced by the cleaning script. The notebook:
+  - Loads the training set (900 matches, 1930–2018) and test set (64 matches, 2022) and prints shape and column info.
+  - Provides a **basic dataset overview**: `info()`, numerical and categorical `describe()`.
+  - **Checks for missing values** and inspects data quality.
+  - Analyzes **class balance** for the target variable `result` (home win / away win / draw) with a bar chart.
+  - Plots **feature distributions** (histograms) for numerical variables (scores, margins, penalties, etc.).
+  - Builds a **correlation heatmap** for numerical features and outcome indicators (`home_team_win`, `away_team_win`, `draw`).
+
+  The notebook was written for Google Colab (Drive mount); to run locally, change the CSV paths to `data_clean/matches_train.csv` and `data_clean/matches_test.csv`.
+
 - `docs/`  
   Documentation and metadata for this project.
   - `docs/worldcup_subset_codebook.csv`: data dictionary for key variables in the cleaned match datasets.
 
 - `requirements.txt`  
-  Python dependency file (currently `pandas>=2.0.0`) used to recreate the environment with `pip install -r requirements.txt`.
+  Python dependency file (currently `pandas>=2.0.0`). Recreate the environment with `pip3 install -r requirements.txt`.
 
 ### 3. Units of analysis
 
@@ -78,8 +89,10 @@ The raw CSVs in `files_needed/` are not modified by the script; new cleaned file
 
 ### 6. Running
 
-- run from the project root:
+- **Generate cleaned data** (from the project root):
 
   ```bash
   python3 scripts/clean_worldcup.py
   ```
+
+- **Run the EDA notebook**: Open `Data Science Report.ipynb` in Jupyter or Colab. If running locally, set the CSV paths to `data_clean/matches_train.csv` and `data_clean/matches_test.csv` (the notebook’s default paths point to Google Drive).
