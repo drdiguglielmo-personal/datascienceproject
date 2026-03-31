@@ -1,0 +1,243 @@
+Course Project
+Throughout the semester, you will work in teams on an applied project, learning to apply some of the methods in this class in greater depth. Your team will select a dataset to work with and apply the methods from the course to gain an understanding of the data. You will have considerable freedom in selecting a target application for your project; however, the topic and scope of the project will be determined in consultation with the instructor and TAs. It is imperative that your team selects a topic that is personally meaningful to the team members, as you will be working on this project for a significant part of the semester. The project will be evaluated based on the following two components that align with the lectures:
+
+Part I: Data Description (40% of the Course Project): The goal of Part I is to demonstrate the team’s ability to understand and reason about a dataset before applying any modeling or advanced analysis. In this stage, the team should focus on describing the data in detail, including its source, structure, and key variables, and explaining the motivation behind the chosen dataset and research question. The team should conduct exploratory data analysis to identify relevant patterns, distributions, and relationships, as well as assess data quality issues such as missing values, imbalance, noise, or inconsistencies. Any preprocessing or transformation steps should be clearly described and justified. This part emphasizes thoughtful assessment and transparency in decision-making, rather than producing definitive results.
+Part II: Models and Results (60% of the Course Project): The goal of Part II is to apply an appropriate data analysis strategy to address the research question defined in Part I and to critically interpret the results. The team should select one primary analytic approach—such as classification, clustering, or a Generative AI–based method (e.g., summarization, annotation, or embedding-based analysis)—and explain why it is suitable for the data and problem at hand. The team should describe the modeling or analytic process, present the results using appropriate evaluation or validation techniques, and interpret what these results reveal about the data. This part should also include a discussion of limitations, uncertainty, and potential biases in the analysis. Emphasis will be placed on the quality of reasoning, the appropriateness of the chosen methods, and the team’s ability to reflect on the strengths and weaknesses of their approach. 
+
+
+Schedule
+Week
+
+Date
+
+Topic
+
+Due
+
+1
+
+T 01/13
+
+Welcome and introduction
+
+Read the syllabus
+
+UNIT 1: Data Management
+
+ 
+
+Th 01/15
+
+Data Description 
+
+ 
+
+2
+
+T 01/20
+
+Data Preprocessing
+
+ 
+
+ 
+
+Th 01/22
+
+Data Transformation
+
+ 
+
+3
+
+T 01/27
+
+Data Visualization
+
+ 
+
+ 
+
+Th 01/29
+
+Feature Engineering
+
+ 
+
+4
+
+T 02/03
+
+Data Evaluation
+
+ 
+
+ 
+
+Th 02/05
+
+Data Reduction
+
+IA1
+
+UNIT 2: Supervised Machine Learning
+5
+
+T 02/10
+
+Brief Review on ML Algorithms
+
+ 
+
+ 
+
+Th 02/12
+
+Review 1: KNN and Decision Trees
+
+Project Part 1
+
+6
+
+T 02/17
+
+Review 2: Naïve Bayes, SVM, and Kernels
+
+ 
+
+ 
+
+Th 02/19
+
+Review 3:Neural Networks and Pytorch
+
+ 
+
+7
+
+T 02/24
+
+Model Evaluation
+
+ 
+
+ 
+
+Th 02/26
+
+Imbalanced Datasets and Embeddings
+
+IA2
+
+8
+
+T 03/03
+
+Class Review	
+ 
+
+Th 03/05
+
+Midterm Exam	
+9
+
+T 03/10
+
+Spring Break
+
+Th 03/12
+
+UNIT 3: Unsupervised Machine Learning
+10
+
+T 03/17
+
+Unsupervised Machine Learning 	
+ 
+
+ 
+
+Th 03/19
+
+K-Means	
+ 
+
+11
+
+T 03/24
+
+Clustering: t-SNE & PCA	
+ 
+
+ 
+
+Th 03/26
+
+Data Exercise	
+IA3 
+
+UNIT 4: Statistical Inference and Causality
+
+12
+
+T 03/31
+
+Stats Review	
+ 
+
+ 
+
+Th 04/02
+
+Causal Analysis	
+ 
+
+13
+
+T 04/07
+
+Observational Studies	
+ 
+
+UNIT 5: Generative AI and Data Science
+ 
+
+Th 04/09
+
+Data Preparation & Annotation	IA4
+14
+
+T 04/14
+
+Embeddings, Semantic Search, and RAG	
+ 
+
+Th 04/16
+
+LLMs as Analytic Collaborators	
+UNIT 6: Conclusion
+
+15
+
+T 04/21
+
+Project Presentations I
+
+ IA5
+
+ 
+
+Th 04/23
+
+Project Presentations II
+
+ 
+
+16
+
+T 04/28
+
+Course Review II
+
+Project Part 2
+Final Exam: May 5, 1:45 PM -3:45 PM at Cushing 303
