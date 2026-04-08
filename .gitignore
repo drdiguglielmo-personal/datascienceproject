@@ -1,0 +1,11 @@
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Large external datasets (re-downloadable, see docs/code_analysis.md for URLs)
+data_clean/players.csv
+data_clean/player_valuations.csv
+data_clean/features_expanded_train.csv
