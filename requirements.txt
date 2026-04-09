@@ -1,1 +1,16 @@
+# Core data stack
 pandas>=2.0.0
+numpy
+
+# Notebooks / plotting (used in the report + results notebooks)
+matplotlib
+seaborn
+jupyter
+ipykernel
+
+# ML (used in Part 2 modeling + phase-2 expanded script)
+scikit-learn
+xgboost
+
+# Optional experiments (README mentions SMOTE)
+imbalanced-learn
