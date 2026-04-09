@@ -5,7 +5,6 @@ numpy
 # Notebooks / plotting (used in the report + results notebooks)
 matplotlib
 seaborn
-jupyter
 ipykernel
 
 # ML (used in Part 2 modeling + phase-2 expanded script)
