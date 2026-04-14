@@ -1,4 +1,4 @@
-# Phase 2 Results: Expanded Training on International Matches
+# Expanded Training on International Matches
 
 **Date:** 2026-04-07  
 **Outcome:** Did not improve over original pipeline. Documented as a negative result.
@@ -75,7 +75,7 @@ Low correlation with existing features (r=0.287) means they add genuinely new si
 
 ## Files Produced
 
-- `scripts/feature_engineering_expanded.py` -- Phase 2 pipeline (preserved for reference)
+- `scripts/feature_engineering_expanded.py` -- Expanded training pipeline (preserved for reference)
 - `data_clean/features_expanded_train.csv` -- 28,227 rows x 37 cols
 - `data_clean/features_expanded_test.csv` -- 64 rows x 37 cols
 - `data_clean/international_results.csv` -- 49,287 international matches (source data)
