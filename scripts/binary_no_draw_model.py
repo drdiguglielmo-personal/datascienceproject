@@ -11,6 +11,7 @@ It reuses the engineered feature CSVs produced by scripts/feature_engineering.py
 
 from __future__ import annotations
 
+import os
 import pathlib
 import warnings
 
@@ -19,13 +20,25 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
+from sklearn.metrics import RocCurveDisplay
 from sklearn.preprocessing import StandardScaler
 
 
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA_CLEAN_DIR = PROJECT_ROOT / "data_clean"
+FIGURES_DIR = PROJECT_ROOT / "figures"
 
 RANDOM_STATE = 42
+
+# Ensure matplotlib/fontconfig caches are writable inside the project.
+# This prevents failures in sandboxed or restricted environments.
+os.environ.setdefault("MPLBACKEND", "Agg")
+os.environ.setdefault("MPLCONFIGDIR", str(PROJECT_ROOT / ".mplconfig"))
+os.environ.setdefault("XDG_CACHE_HOME", str(PROJECT_ROOT / ".cache"))
+
+# Import plotting libraries after environment is set
+import matplotlib.pyplot as plt  # noqa: E402
+import seaborn as sns  # noqa: E402
 
 
 def _pick_label(options: list[str], present: set[str]) -> str:
@@ -162,6 +175,12 @@ def main() -> None:
         ("Random Forest (tuned, balanced)", make_rf),
     ]
 
+    # Ensure figures directory exists
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    sns.set(style="whitegrid")
+
+    summary_rows: list[dict] = []
+
     for name, fn in models:
         print(f"\n== {name} ==")
         tcv = temporal_cv_binary(df_train, feature_cols, draw_label, home_win_label, fn)
@@ -186,6 +205,60 @@ def main() -> None:
         auc = roc_auc_score(y_test, y_proba) if y_proba is not None else np.nan
 
         print(f"Test (2022, no-draw): acc={acc:.3f}, f1={f1:.3f}, auc={auc:.3f}")
+
+        summary_rows.append(
+            {
+                "model": name,
+                "temporal_acc_mean": float(tcv["accuracy"].mean()),
+                "temporal_f1_mean": float(tcv["f1"].mean()),
+                "temporal_auc_mean": float(tcv["roc_auc"].mean()),
+                "test_acc": float(acc),
+                "test_f1": float(f1),
+                "test_auc": float(auc),
+            }
+        )
+
+    # --- Save visuals (test metrics bar chart + ROC curves) ---
+    summary = pd.DataFrame(summary_rows)
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    for ax, metric, title in zip(
+        axes,
+        ["test_acc", "test_f1", "test_auc"],
+        ["2022 Test Accuracy (no-draw)", "2022 Test F1 (no-draw)", "2022 Test ROC-AUC (no-draw)"],
+    ):
+        sns.barplot(data=summary, x="model", y=metric, ax=ax)
+        ax.set_title(title)
+        ax.set_xlabel("")
+        ax.set_ylabel(metric)
+        ax.tick_params(axis="x", rotation=20)
+        ax.set_ylim(0, 1)
+
+    fig.tight_layout()
+    out_bar = FIGURES_DIR / "binary_no_draw_test_metrics.png"
+    fig.savefig(out_bar, dpi=200)
+    plt.close(fig)
+
+    # ROC curves on 2022 test (no-draw)
+    scaler = StandardScaler()
+    X_tr_s = scaler.fit_transform(X_train)
+    X_te_s = scaler.transform(X_test)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    for name, fn in models:
+        m = fn()
+        m.fit(X_tr_s, y_train)
+        RocCurveDisplay.from_estimator(m, X_te_s, y_test, name=name, ax=ax)
+    ax.plot([0, 1], [0, 1], "--", color="gray", linewidth=1)
+    ax.set_title("ROC Curves (2022 test, draws removed)")
+    fig.tight_layout()
+    out_roc = FIGURES_DIR / "binary_no_draw_roc.png"
+    fig.savefig(out_roc, dpi=200)
+    plt.close(fig)
+
+    print("\nSaved figures:")
+    print(f"  - {out_bar}")
+    print(f"  - {out_roc}")
 
 
 if __name__ == "__main__":
