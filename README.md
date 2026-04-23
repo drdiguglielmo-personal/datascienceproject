@@ -174,6 +174,8 @@ Head-to-head features correctly handle the asymmetry of prior home/away designat
 
 #### F. ELO Ratings (3 features)
 
+**What ELO means:** ELO (often written “Elo”) is a rating system originally developed for chess that summarizes a team’s **overall strength** into a single number. Higher ELO means a stronger team. The **difference** in ratings between two teams can be converted into a pre-match expected result: if Team A’s ELO is much higher than Team B’s, Team A is expected to win more often. After each match, both teams’ ratings are updated: teams that perform **better than expected** gain points, and teams that perform **worse than expected** lose points. This gives a simple, leakage-safe way to carry forward historical performance into a single feature.
+
 | Feature | Description |
 |---------|-------------|
 | `home_elo` | Pre-match ELO rating (all teams start at 1500, K=32) |
