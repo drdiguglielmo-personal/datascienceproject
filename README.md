@@ -242,6 +242,8 @@ This is distinct from the `home_is_host` feature, which only flags the specific 
 
 **Notebook:** `Part2_Models_and_Results.ipynb`
 
+**Additional experiment (binary, no draws):** We also run a second model that **removes draw matches** and predicts a **binary** outcome (home win vs away win). This experiment is implemented in the notebook (Section 10) and as a standalone script: `scripts/binary_no_draw_model.py`.
+
 ### 5.1 Preprocessing
 
 The preprocessing pipeline consists of three steps. First, we construct the feature matrix from the 39 engineered features, dropping metadata columns (match date, year, team names) and the target variable. Second, we apply `StandardScaler` fit on the training data only and transform both train and test sets to prevent information leakage. Third, we encode the target variable using `LabelEncoder` to map result strings to integers.
