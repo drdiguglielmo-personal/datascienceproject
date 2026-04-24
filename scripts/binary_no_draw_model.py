@@ -87,7 +87,7 @@ def temporal_cv_binary(
     df_train: pd.DataFrame,
     feature_cols: list[str],
     draw_label: str,
-    home_win_label: str,
+    team_a_win_label: str,
     model_fn,
     val_years: tuple[int, ...] = (2010, 2014, 2018),
 ) -> pd.DataFrame:
@@ -100,9 +100,9 @@ def temporal_cv_binary(
         va = va[va["result"] != draw_label]
 
         X_tr = tr[feature_cols].values
-        y_tr = (tr["result"] == home_win_label).astype(int).values
+        y_tr = (tr["result"] == team_a_win_label).astype(int).values
         X_va = va[feature_cols].values
-        y_va = (va["result"] == home_win_label).astype(int).values
+        y_va = (va["result"] == team_a_win_label).astype(int).values
 
         scaler = StandardScaler()
         X_tr_s = scaler.fit_transform(X_tr)
@@ -134,22 +134,35 @@ def main() -> None:
 
     df_train, df_test, feature_cols = load_features()
 
+    # Reframe administrative home/away as Team A / Team B (neutral-site framing)
+    result_map = {
+        "home team win": "team a win",
+        "away team win": "team b win",
+        "draw": "draw",
+        "Home team win": "team a win",
+        "Away team win": "team b win",
+        "Draw": "draw",
+    }
+    df_train["result"] = df_train["result"].map(result_map)
+    df_test["result"] = df_test["result"].map(result_map)
+
     labels = set(df_train["result"].unique())
-    draw_label = _pick_label(["draw", "Draw"], labels)
-    home_win_label = _pick_label(["home team win", "Home team win"], labels)
+    draw_label = _pick_label(["draw"], labels)
+    team_a_win_label = _pick_label(["team a win"], labels)
 
     # Filter draws
     train_bin = df_train[df_train["result"] != draw_label].copy()
     test_bin = df_test[df_test["result"] != draw_label].copy()
 
     X_train = train_bin[feature_cols].values
-    y_train = (train_bin["result"] == home_win_label).astype(int).values
     X_test = test_bin[feature_cols].values
-    y_test = (test_bin["result"] == home_win_label).astype(int).values
+    # Binary target: 1 = Team A win, 0 = Team B win
+    y_train = (train_bin["result"] == team_a_win_label).astype(int).values
+    y_test = (test_bin["result"] == team_a_win_label).astype(int).values
 
     print("Binary dataset (draws removed)")
-    print(f"  Train rows: {len(train_bin)} | home wins: {int(y_train.sum())} | away wins: {int((1-y_train).sum())}")
-    print(f"  Test rows:  {len(test_bin)} | home wins: {int(y_test.sum())} | away wins: {int((1-y_test).sum())}")
+    print(f"  Train rows: {len(train_bin)} | Team A wins: {int(y_train.sum())} | Team B wins: {int((1-y_train).sum())}")
+    print(f"  Test rows:  {len(test_bin)} | Team A wins: {int(y_test.sum())} | Team B wins: {int((1-y_test).sum())}")
 
     def make_logreg():
         # Use liblinear to avoid occasional overflow warnings on small/collinear datasets
@@ -183,7 +196,7 @@ def main() -> None:
 
     for name, fn in models:
         print(f"\n== {name} ==")
-        tcv = temporal_cv_binary(df_train, feature_cols, draw_label, home_win_label, fn)
+        tcv = temporal_cv_binary(df_train, feature_cols, draw_label, team_a_win_label, fn)
         print("Temporal CV (no-draw) by year:")
         print(tcv.to_string(index=False, formatters={k: "{:.3f}".format for k in ["accuracy", "f1", "roc_auc"]}))
         print(

@@ -242,7 +242,7 @@ This is distinct from the `home_is_host` feature, which only flags the specific 
 
 **Notebook:** `Part2_Models_and_Results.ipynb`
 
-**Additional experiment (binary, no draws):** We also run a second model that **removes draw matches** and predicts a **binary** outcome (home win vs away win). This experiment is implemented in the notebook (Section 10) and as a standalone script: `scripts/binary_no_draw_model.py`.
+**Additional experiment (binary, no draws):** We also run a second model that **removes draw matches** and predicts a **binary** outcome (**Team A win vs Team B win**, where Team A/B correspond to the administrative “home/away” slots in the raw data). This experiment is implemented in the notebook (Section 10) and as a standalone script: `scripts/binary_no_draw_model.py`.
 
 ### 5.1 Preprocessing
 
