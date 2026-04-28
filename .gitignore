@@ -9,3 +9,14 @@ __pycache__/
 data_clean/players.csv
 data_clean/player_valuations.csv
 data_clean/features_expanded_train.csv
+
+# Matplotlib / fontconfig caches (auto-generated, machine-specific)
+.cache/
+.mplconfig/
+
+# Internal team notes, not for public repo (see CLAUDE.md for rationale)
+docs/current.md
+docs/plan.md
+docs/presentation_and_comments.txt
+docs/draft_CSE40467 - Project Part 2 Report.pdf
+scripts/fix_model_comparison_figure.py
