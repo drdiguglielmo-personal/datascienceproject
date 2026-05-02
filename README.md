@@ -46,7 +46,7 @@ Groll, Ley, Schauberger, and Lock (2019) organized a formal prediction tournamen
 
 ### 2.5 Context for Our Work
 
-Published benchmarks for three-class World Cup prediction on large datasets cluster around 53 to 55% accuracy (Hvattum and Arntzen, 2010). Our best model achieves 62.5% test accuracy on the 2022 World Cup, though this estimate carries high variance due to the 64-match test set. The temporal walk-forward cross-validation F1 score of 0.541, computed across approximately 192 validation matches from three tournaments (2010, 2014, 2018, 2022), provides a more stable estimate of model performance.
+Published benchmarks for three-class World Cup prediction on large datasets cluster around 53 to 55% accuracy (Hvattum and Arntzen, 2010). Our best model achieves 62.5% test accuracy on the 2022 World Cup, though this estimate carries high variance due to the 64-match test set. The temporal walk-forward cross-validation F1 score of 0.541, computed across approximately 256 validation matches from four tournaments (2010, 2014, 2018, 2022), provides a more stable estimate of model performance.
 
 Our project contributes to this literature by (1) demonstrating the importance of temporal cross-validation for honest evaluation, (2) systematically testing five external data sources and documenting both positive and negative results, and (3) identifying the "overconfidence" pattern whereby precise team-strength features destroy draw prediction on small datasets.
 
@@ -242,7 +242,7 @@ This is distinct from the `home_is_host` feature, which only flags the specific 
 
 **Notebook:** `Part2_Models_and_Results.ipynb`
 
-**Additional experiment (binary, no draws):** We also run a second model that **removes draw matches** and predicts a **binary** outcome (home win vs away win). This experiment is implemented in the notebook (Section 10) and as a standalone script: `scripts/binary_no_draw_model.py`.
+**Additional experiments addressing presentation feedback.** Two follow-up experiments are reported in the notebook and as standalone scripts. (1) A binary win-or-loss variant that removes draw matches and predicts home win vs away win. Notebook Section 12, script `scripts/binary_no_draw_model.py`. (2) A re-framing of the same Random Forest predictions on the 2022 test set as favorite vs upset (where favorite is the team with the higher pre-match ELO), sliced by ELO tier, ELO gap, confederation, and prior-WC-title status. Notebook Section 13, script `scripts/test_set_breakdown.py`.
 
 ### 5.1 Preprocessing
 
@@ -394,8 +394,10 @@ A grid search over Random Forest hyperparameters using 4-fold temporal walk-forw
 
 | Configuration | CV F1 | Test Accuracy | Test F1 | Draw Recall (CV) |
 |---------------|:-----:|:-------------:|:-------:|:----------------:|
-| Original (200 trees, default leaf) | 0.488 | 0.609 | 0.556 | 0.24 |
-| **Tuned (300 trees, min_leaf=5)** | **0.531** | **0.656** | **0.636** | **0.41** |
+| Original (200 trees, default leaf, 37 features) | 0.488 | 0.609 | 0.556 | 0.24 |
+| **Tuned (300 trees, min_leaf=5, 37 features)** | **0.531** | **0.656** | **0.636** | **0.41** |
+
+This table isolates the effect of the hyperparameter change while holding the feature set fixed at 37 features (no continent advantage). The headline 0.625 / 0.578 number reported in Section 6.2 is the same tuned model after adding the 2 continent-advantage features (39 features total); see Section 7.3a for that step.
 
 The `min_samples_leaf=5` parameter prevents the model from creating terminal nodes with fewer than 5 training examples, which serves as a regularization mechanism. This single change improved cross-validation F1 by 4.3 percentage points, which is more than four times the improvement from the best feature addition. The result demonstrates that on a 900-row dataset, the model was overfitting rather than lacking information.
 
@@ -562,23 +564,29 @@ datascienceproject/
 │   └── tournaments.csv            #   All tournaments with year info
 │
 ├── scripts/
-│   ├── clean_worldcup.py          # Part 1: data cleaning and train/test split
-│   ├── feature_engineering.py     # Part 2: feature engineering pipeline
-│   └── feature_engineering_expanded.py  # Expanded training experiment
+│   ├── clean_worldcup.py                  # Data cleaning and train/test split
+│   ├── feature_engineering.py             # 39-feature pipeline (final model)
+│   ├── feature_engineering_expanded.py    # Expanded training experiment
+│   ├── binary_no_draw_model.py            # Binary win-or-loss variant
+│   └── test_set_breakdown.py              # Favorite/upset reframing on 2022
 │
 ├── data_clean/
-│   ├── matches_train.csv          # Cleaned matches, 1930 to 2018 (900 rows)
-│   ├── matches_test.csv           # Cleaned matches, 2022 (64 rows)
-│   ├── features_train.csv         # Engineered features (900 rows)
-│   ├── features_test.csv          # Engineered features (64 rows)
-│   ├── international_results.csv  # 49K international matches
-│   ├── fifa_rankings.csv          # Historical FIFA rankings
-│   ├── wc_squads.csv              # WC squad rosters
-│   └── statsbomb_wc_stats.csv     # StatsBomb event data
+│   ├── matches_train.csv                  # Cleaned matches, 1930 to 2018 (900)
+│   ├── matches_test.csv                   # Cleaned matches, 2022 (64)
+│   ├── features_train.csv                 # Engineered features (900 rows)
+│   ├── features_test.csv                  # Engineered features (64 rows)
+│   ├── features_expanded_test.csv         # Expanded-experiment features
+│   ├── international_results.csv          # 49K international matches
+│   ├── fifa_rankings.csv                  # Historical FIFA rankings
+│   ├── wc_squads.csv                      # WC squad rosters
+│   ├── statsbomb_wc_stats.csv             # StatsBomb event data
+│   ├── binary_no_draw_summary.csv         # Binary model summary
+│   └── test_predictions_2022_grouped.csv  # Reframing predictions
 │
-├── figures/                       # Generated visualizations (11 PNGs)
+├── figures/                       # 17 PNG visualizations (01-14, plus 3 binary_no_draw_*)
 ├── Data Science Report.ipynb      # Part 1: Exploratory Data Analysis
-├── Part2_Models_and_Results.ipynb  # Part 2: Models, evaluation, results
+├── Part2_Models_and_Results.ipynb # Part 2: Models, evaluation, results
+├── requirements.txt
 └── README.md                      # This file
 ```
 
@@ -586,17 +594,19 @@ datascienceproject/
 
 ```bash
 # 1. Install dependencies
-pip3 install pandas numpy matplotlib seaborn scikit-learn xgboost
+pip3 install -r requirements.txt
 
-# 2. Generate cleaned data
+# 2. Generate cleaned data and engineered features
 python3 scripts/clean_worldcup.py
-
-# 3. Generate engineered features
 python3 scripts/feature_engineering.py
 
+# 3. Run the presentation-feedback follow-ups
+python3 scripts/binary_no_draw_model.py    # Binary win-or-loss variant
+python3 scripts/test_set_breakdown.py      # Favorite/upset reframing on 2022
+
 # 4. Run the notebooks
-#    Data Science Report.ipynb   (Part 1: EDA)
-#    Part2_Models_and_Results.ipynb  (Part 2: modeling and evaluation)
+#    Data Science Report.ipynb           (Part 1: EDA)
+#    Part2_Models_and_Results.ipynb      (Part 2: modeling, evaluation, follow-ups)
 ```
 
 The Part 2 notebook will automatically run `feature_engineering.py` if the feature CSV files are missing.
