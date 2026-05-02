@@ -109,7 +109,7 @@ An important conceptual note: the "home team" designation in World Cup matches i
 
 ### 3.5 Data Documentation
 
-Each raw column is documented in `docs/worldcup_subset_codebook.csv`. The raw match data includes tournament and match identifiers, stage information (group stage, knockout stage, stage name), team names and codes, match scores, extra time and penalty indicators, venue details (stadium name, city name, country name), and outcome labels.
+The raw match data includes tournament and match identifiers, stage information (group stage, knockout stage, stage name), team names and codes, match scores, extra time and penalty indicators, venue details (stadium name, city name, country name), and outcome labels.
 
 ## 4. Feature Engineering
 
@@ -575,13 +575,6 @@ datascienceproject/
 │   ├── fifa_rankings.csv          # Historical FIFA rankings
 │   ├── wc_squads.csv              # WC squad rosters
 │   └── statsbomb_wc_stats.csv     # StatsBomb event data
-│
-├── docs/                          # Documentation and analysis
-│   ├── summary.md                 # Full project overview
-│   ├── code_analysis.md           # Detailed code walkthrough
-│   ├── expanded_training_results.md  # Expanded training experiment results
-│   ├── feature_experiment_results.md # Feature experiment results
-│   └── worldcup_subset_codebook.csv  # Data dictionary
 │
 ├── figures/                       # Generated visualizations (11 PNGs)
 ├── Data Science Report.ipynb      # Part 1: Exploratory Data Analysis

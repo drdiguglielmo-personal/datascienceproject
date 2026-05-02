@@ -14,9 +14,14 @@ data_clean/features_expanded_train.csv
 .cache/
 .mplconfig/
 
-# Internal team notes, not for public repo (see CLAUDE.md for rationale)
-docs/current.md
-docs/plan.md
-docs/presentation_and_comments.txt
-docs/draft_CSE40467 - Project Part 2 Report.pdf
+# Internal slide-figure script
 scripts/fix_model_comparison_figure.py
+
+# docs/ and Part2_Report/ submitted via Canvas, not GitHub.
+# README.md is the only explanation in the public repo.
+docs/
+Part2_Report/
+
+# Local-only working notes and the Part 1 template (no longer a deliverable)
+CLAUDE.md
+CSE40467 - Project Part 1 Report Template.docx
